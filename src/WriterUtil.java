@@ -52,8 +52,9 @@ public class WriterUtil extends WriteCommandAction.Simple {
             Set<String> set = json.keySet();
             List<String>  list = new ArrayList<String>(set);
             createField(json,list, mClass);
-            createSetMethod(json,list,mClass);
-            createGetMethod(json,list,mClass);
+            // remove public method
+//            createSetMethod(json,list,mClass);
+//            createGetMethod(json,list,mClass);
             JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(project);
             styleManager.optimizeImports(mFile);
             styleManager.shortenClassReferences(mClass);
@@ -67,12 +68,13 @@ public class WriterUtil extends WriteCommandAction.Simple {
 
     private void createField( JSONObject json, List<String> list ,PsiClass mClass){
         StringBuilder sb = new StringBuilder();
-        sb.append("/** \n");
-        for(int i=0;i<list.size();i++){
-            String key = list.get(i) ;
-            sb.append("* " + key + " : " + json.get(key) + "\n");
-        }
-        sb.append("*/ \n");
+
+//        sb.append("/** \n");
+//        for(int i=0;i<list.size();i++){
+//            String key = list.get(i) ;
+//            sb.append("* " + key + " : " + json.get(key) + "\n");
+//        }
+//        sb.append("*/ \n");
 
         for(int i=0;i<list.size();i++){
             String key = list.get(i) ;
@@ -97,7 +99,10 @@ public class WriterUtil extends WriteCommandAction.Simple {
             }    else{
                 typeStr=" String "      ;
             }
-            String filedStr=  "private  " +typeStr+ key + " ; "     ;
+//            String filedStr=  "private  " +typeStr+ key + " ; "     ;
+
+            // use public
+            String filedStr=  "public  " +typeStr+ key + " ; "     ;
 
 
             if(i==0){
@@ -133,8 +138,8 @@ public class WriterUtil extends WriteCommandAction.Simple {
         Set<String> set = json.keySet();
         List<String>  list = new ArrayList<String>(set);
         createField(json,list, subClass);
-        createSetMethod(json,list,subClass);
-        createGetMethod(json,list,subClass);
+//        createSetMethod(json,list,subClass);
+//        createGetMethod(json,list,subClass);
         mClass.add(subClass);
 
     }
@@ -143,7 +148,8 @@ public class WriterUtil extends WriteCommandAction.Simple {
 
 
 
-        return key.substring(0,1).toUpperCase()+key.substring(1)+"Entity";
+//        return key.substring(0,1).toUpperCase()+key.substring(1)+"Entity";
+        return key.substring(0,1).toUpperCase()+key.substring(1);
     }
 
     private void createSetMethod(JSONObject json, List<String> list,PsiClass mClass){
